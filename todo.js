@@ -2,13 +2,19 @@ const todoInput = document.querySelector(".todo-input");
 const todoButton = document.querySelector(".todo-button");
 const todoList = document.querySelector(".todo-list");
 const filterOption = document.querySelector(".filter-todo");
+const form = document.getElementById("todoForm");
 
 document.addEventListener("DOMContentLoaded", getLocalTodos);
 todoButton.addEventListener("click", addTodo);
 todoList.addEventListener("click", deleteCheck);
 filterOption.addEventListener("change", filterTodo);
 
+
+    // Add event listener to the complete button
+
+
 function addTodo(event) {
+
     event.preventDefault();
     const todoDiv = document.createElement("div");
     todoDiv.classList.add("todo");
@@ -16,22 +22,87 @@ function addTodo(event) {
     newTodo.innerText = todoInput.value; 
     newTodo.classList.add("todo-item");
     todoDiv.appendChild(newTodo);
-    //ADDING TO LOCAL STORAGE 
-    saveLocalTodos(todoInput.value);
     
     const completedButton = document.createElement("button");
-    completedButton.innerHTML = '<i class="fas fa-check-circle"></li>';
+    completedButton.innerHTML = '<i class="fas fa-check-circle"></i>';
     completedButton.classList.add("complete-btn");
     todoDiv.appendChild(completedButton);
 
     const trashButton = document.createElement("button");
-    trashButton.innerHTML = '<i class="fas fa-trash"></li>';
+    trashButton.innerHTML = '<i class="fas fa-trash"></i>';
     trashButton.classList.add("trash-btn");
     todoDiv.appendChild(trashButton);
     
     todoList.appendChild(todoDiv);
     todoInput.value = "";
+
+    // Determine the status of the todo item
+    const status = 0; // Default is uncompleted
+
+    // Add the new todo to local storage
+    saveLocalTodos(newTodo.innerText, status);
+
+    // Submit the form using AJAX
+    const formData = new FormData(form);
+    formData.set("content", newTodo.innerText); // Set the content in the form data
+    formData.set("status", status); // Set the status in the form data
+    fetch(form.getAttribute("action"), {
+        method: form.getAttribute("method"),
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // If task added successfully, update the todo list
+            updateTodoList();
+        } else {
+            // If an error occurred, display the error message
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+        completedButton.addEventListener("click", function() {
+        const todo = todoDiv;
+        todo.classList.toggle("completed");
+        
+        // Update the status
+        const updatedStatus = todo.classList.contains("completed") ? 1 : 0;
+        updateStatus(newTodo.innerText, updatedStatus);
+    });
+
 }
+
+
+
+function updateStatus(content, status) {
+    // Create a new FormData object
+    const formData = new FormData();
+    formData.set("content", content);
+    formData.set("status", status);
+
+    // Send a POST request to the PHP file
+    fetch("update_status.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Status updated successfully
+        } else {
+            // Error updating status
+            console.error(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+    
 
 function deleteCheck(e) {
     const item = e.target;
@@ -104,12 +175,12 @@ function getLocalTodos() {
         todoDiv.appendChild(newTodo);
 
         const completedButton = document.createElement("button");
-        completedButton.innerHTML = '<i class="fas fa-check-circle"></li>';
+        completedButton.innerHTML = '<i class="fas fa-check-circle"></i>';
         completedButton.classList.add("complete-btn");
         todoDiv.appendChild(completedButton);
 
         const trashButton = document.createElement("button");
-        trashButton.innerHTML = '<i class="fas fa-trash"></li>';
+        trashButton.innerHTML = '<i class="fas fa-trash"></i>';
         trashButton.classList.add("trash-btn");
         todoDiv.appendChild(trashButton);
 
@@ -129,3 +200,4 @@ function removeLocalTodos(todo) {
     todos.splice(todos.indexOf(todoIndex), 1);
     localStorage.setItem("todos", JSON.stringify(todos));
 }
+
