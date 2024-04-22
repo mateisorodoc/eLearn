@@ -1,0 +1,174 @@
+
+.tealsection {
+    background-color: teal;
+}
+
+.tealbtn {
+    background-color: teal;
+}
+
+.tealtext {
+    color: teal;
+}
+
+.tealcard {
+    background-color: teal;
+}
+
+.banner {
+    display: block;
+    width: 100%;
+    height: 9em;
+    background-color: #212529;
+
+}
+
+.banner h2 {
+
+    color: white;
+    text-align: center;
+    font-family: 'Roboto Slab', serif;
+    font-size: 1.6em;
+    font-weight: 400;
+    margin: auto;
+    padding: 2.4em;
+
+}
+
+.background-section {
+    background-color: #212529;
+}
+
+body::before {
+    display: block;
+    counter-reset: '';
+    height: 60px;
+}
+
+.background-section-teal {
+    background-color: teal;
+    display: block;
+    width: 100%;
+    height: 9em;
+}
+
+.tealh2 {
+    display: block;
+    background-color:#212529;
+    width: 100%;
+    height: 3em;
+}
+
+.dark-footer {
+    background-color: #0f1011;
+}
+
+.video-box {
+    width: 100%;
+    max-height: 13em;
+}
+
+
+.done-a {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-decoration: none;
+}
+
+.done-btn{
+    height: 3.5em;
+}
+
+.cnt-msg {
+    align-self: center;
+    text-align: center;
+    color: lightgrey;
+    margin-top: 10%;
+    font-size: 3em;
+}
+
+.done-container {
+    height: 200px;
+    position: relative;
+}
+
+.done-bg{
+    background-color: #212529;
+}
+
+.boxes{
+    background-color: #212529;
+}
+
+.bg-teal{
+    background-color: teal;
+}
+
+#flashbtn{
+    background: linear-gradient(180deg, teal 0%, hsla(184, 86%, 23%, 0.08) 100%);
+    border: none;
+    border-radius: 1.2em;
+    color: black;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition: 0.3s;
+}
+#flashbtn:hover {
+    background-image: linear-gradient(to top,rgba(56, 173, 154, 0.304),  rgb(6, 225, 225));
+    color: white;
+  }
+
+  #retrobtn{
+    background: linear-gradient(180deg, teal 0%, rgba(8,101,108,0.08) 100%);
+    border: none;
+    border-radius: 1.2em;
+    color: black;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition: 0.3s;
+}
+#retrobtn:hover {
+    background-image: linear-gradient(to top,rgba(56, 173, 154, 0.304),  rgb(6, 225, 225));
+    color: white;
+
+  }
+
+  #abbtn{
+    background: linear-gradient(180deg, teal 0%, rgba(8,101,108,0.08) 100%);
+    border: none;
+    border-radius: 1.2em;
+    color: black;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition: 0.3s;
+}
+#abbtn:hover {
+    background-image: linear-gradient(to top,rgba(56, 173, 154, 0.304),  rgb(6, 225, 225));
+    color: white;
+
+  }
+
+#about{
+    background-color: #212529;
+    
+}
+
+.abtxt{
+    color: rgb(255, 255, 255);
+    font-size: x-large;
+}
+
+.abh2{
+    color: rgb(255, 255, 255);
+    font-size: xx-large;
+}
