@@ -11,8 +11,6 @@ filterOption.addEventListener("change", filterTodo);
 
 
     // Add event listener to the complete button
-    let i = 0;
-
 
 function addTodo(event) {
     event.preventDefault();
@@ -53,14 +51,11 @@ function addTodo(event) {
     })
     .then(response => {
         response.json()
-        console.log(response)
-
     })
     .then(data => {
         if (data.success) {
             // If task added successfully, update the todo list
             updateTodoList();
-            console.log(data)
             alert('ok')
         } else {
             // If an error occurred, display the error message
@@ -71,6 +66,16 @@ function addTodo(event) {
         console.log('Error:', error);
     });
 
+
+    // Event listener for trash button
+    trashButton.addEventListener("click", function() {
+        // Send request to delete todo item from database
+        deleteTodoFromDB(newTodo.innerText);
+        // Remove todo from UI
+        todoDiv.remove();
+    });
+
+     // Event listener for complete button
     completedButton.addEventListener("click", function() {
         let todo = newTodo;
 
@@ -211,3 +216,20 @@ function removeLocalTodos(todo) {
     localStorage.setItem("todos", JSON.stringify(todos));
 }
 
+function deleteTodoFromDB(todoContent) {
+    const formData = new FormData();
+    formData.set("content", todoContent);
+    fetch("delete_todo.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            console.error(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
