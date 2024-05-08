@@ -11,16 +11,17 @@ filterOption.addEventListener("change", filterTodo);
 
 
     // Add event listener to the complete button
+    let i = 0;
 
 
 function addTodo(event) {
-
     event.preventDefault();
     const todoDiv = document.createElement("div");
     todoDiv.classList.add("todo");
     const newTodo = document.createElement("li");
     newTodo.innerText = todoInput.value; 
     newTodo.classList.add("todo-item");
+    console.log("todo-item")
     todoDiv.appendChild(newTodo);
     
     const completedButton = document.createElement("button");
@@ -43,30 +44,39 @@ function addTodo(event) {
     saveLocalTodos(newTodo.innerText, status);
 
     // Submit the form using AJAX
-    const formData = new FormData(form);
+    let formData = new FormData(form);
     formData.set("content", newTodo.innerText); // Set the content in the form data
     formData.set("status", status); // Set the status in the form data
     fetch(form.getAttribute("action"), {
         method: form.getAttribute("method"),
         body: formData
     })
-    .then(response => response.json())
+    .then(response => {
+        response.json()
+        console.log(response)
+
+    })
     .then(data => {
         if (data.success) {
             // If task added successfully, update the todo list
             updateTodoList();
+            console.log(data)
+            alert('ok')
         } else {
             // If an error occurred, display the error message
             alert(data.message);
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.log('Error:', error);
     });
 
-        completedButton.addEventListener("click", function() {
-        const todo = todoDiv;
+    completedButton.addEventListener("click", function() {
+        let todo = newTodo;
+
+        console.log("before:",todo.classList);
         todo.classList.toggle("completed");
+        console.log("after:",todo.classList);
         
         // Update the status
         const updatedStatus = todo.classList.contains("completed") ? 1 : 0;
