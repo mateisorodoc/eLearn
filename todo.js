@@ -9,9 +9,6 @@ todoButton.addEventListener("click", addTodo);
 todoList.addEventListener("click", deleteCheck);
 filterOption.addEventListener("change", filterTodo);
 
-
-    // Add event listener to the complete button
-
 function addTodo(event) {
     event.preventDefault();
     const todoDiv = document.createElement("div");
@@ -76,21 +73,15 @@ function addTodo(event) {
     });
 
      // Event listener for complete button
-    completedButton.addEventListener("click", function() {
+     completedButton.addEventListener("click", function() {
         let todo = newTodo;
-
-        console.log("before:",todo.classList);
         todo.classList.toggle("completed");
-        console.log("after:",todo.classList);
-        
+
         // Update the status
         const updatedStatus = todo.classList.contains("completed") ? 1 : 0;
-        updateStatus(newTodo.innerText, updatedStatus);
+        updateStatus(newTodo.innerText, updatedStatus); // Set updateCompletionTime to true
     });
-
 }
-
-
 
 function updateStatus(content, status) {
     // Create a new FormData object
@@ -107,6 +98,9 @@ function updateStatus(content, status) {
     .then(data => {
         if (data.success) {
             // Status updated successfully
+            if (updateCompletionTime) {
+                console.log("Completion time and status updated successfully.");
+            }
         } else {
             // Error updating status
             console.error(data.message);
@@ -117,7 +111,7 @@ function updateStatus(content, status) {
     });
 }
 
-    
+
 
 function deleteCheck(e) {
     const item = e.target;
