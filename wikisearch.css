@@ -207,4 +207,60 @@ html {
     }
   }
   
-  
+  .result-item {
+    margin-bottom: 1.5rem;
+    background-color: #212529;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.result-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-title a {
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.btn-save {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-save:hover {
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.fa-save:hover{
+  color: green;
+}
+
+.fa-trash:hover{
+  color: red;
+}
+
+
+.btn-save i {
+    font-size: 1.25rem;
+}
+
+.saved-results {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.saved-results .result-item {
+  background-color: #212529;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}

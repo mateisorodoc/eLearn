@@ -9,79 +9,75 @@ todoButton.addEventListener("click", addTodo);
 todoList.addEventListener("click", deleteCheck);
 filterOption.addEventListener("change", filterTodo);
 
-function addTodo(event) {
+createFlashcardForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    const todoDiv = document.createElement("div");
-    todoDiv.classList.add("todo");
-    const newTodo = document.createElement("li");
-    newTodo.innerText = todoInput.value; 
-    newTodo.classList.add("todo-item");
-    console.log("todo-item")
-    todoDiv.appendChild(newTodo);
-    
-    const completedButton = document.createElement("button");
-    completedButton.innerHTML = '<i class="fas fa-check-circle"></i>';
-    completedButton.classList.add("complete-btn");
-    todoDiv.appendChild(completedButton);
+    const frontInput = document.getElementById('front');
+    const backInput = document.getElementById('back');
+    const frontText = frontInput.value;
+    const backText = backInput.value;
+    frontInput.value = '';
+    backInput.value = '';
 
-    const trashButton = document.createElement("button");
-    trashButton.innerHTML = '<i class="fas fa-trash"></i>';
-    trashButton.classList.add("trash-btn");
-    todoDiv.appendChild(trashButton);
-    
-    todoList.appendChild(todoDiv);
-    todoInput.value = "";
+    // Create the flashcard
+    const flashcard = document.createElement('div');
+    flashcard.classList.add('flashcard');
+    const front = document.createElement('div');
+    front.classList.add('flashcard-front');
+    const frontContent = document.createElement('p');
+    frontContent.textContent = frontText;
+    front.appendChild(frontContent);
+    const back = document.createElement('div');
+    back.classList.add('flashcard-back');
+    const backContent = document.createElement('p');
+    backContent.textContent = backText;
+    back.appendChild(backContent);
+    flashcard.appendChild(front);
+    flashcard.appendChild(back);
 
-    // Determine the status of the todo item
-    const status = 0; // Default is uncompleted
+    // Create the delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+    deleteButton.classList.add('delete_flashcard');
+    flashcard.appendChild(deleteButton);
 
-    // Add the new todo to local storage
-    saveLocalTodos(newTodo.innerText, status);
+    flashcardsContainer.appendChild(flashcard);
 
-    // Submit the form using AJAX
-    let formData = new FormData(form);
-    formData.set("content", newTodo.innerText); // Set the content in the form data
-    formData.set("status", status); // Set the status in the form data
-    fetch(form.getAttribute("action"), {
-        method: form.getAttribute("method"),
+    // Add event listener to the delete button
+    deleteButton.addEventListener('click', () => {
+        flashcardsContainer.removeChild(flashcard);
+
+        // Create FormData object to send form data
+        const formData = new FormData();
+        formData.append('front', frontText);
+        formData.append('back', backText);
+
+        // Send delete request to the server
+        fetch('delete_flashcard.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Flashcard deleted successfully');
+            } else {
+                console.error('Error deleting flashcard:', data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Create FormData object to send form data
+    const formData = new FormData();
+    formData.append('front', frontText);
+    formData.append('back', backText);
+
+    // Send form data to the server using fetch
+    fetch('flashcard.php', {
+        method: 'POST',
         body: formData
-    })
-    .then(response => {
-        response.json()
-    })
-    .then(data => {
-        if (data.success) {
-            // If task added successfully, update the todo list
-            updateTodoList();
-            alert('ok')
-        } else {
-            // If an error occurred, display the error message
-            alert(data.message);
-        }
-    })
-    .catch(error => {
-        console.log('Error:', error);
     });
-
-
-    // Event listener for trash button
-    trashButton.addEventListener("click", function() {
-        // Send request to delete todo item from database
-        deleteTodoFromDB(newTodo.innerText);
-        // Remove todo from UI
-        todoDiv.remove();
-    });
-
-     // Event listener for complete button
-     completedButton.addEventListener("click", function() {
-        let todo = newTodo;
-        todo.classList.toggle("completed");
-
-        // Update the status
-        const updatedStatus = todo.classList.contains("completed") ? 1 : 0;
-        updateStatus(newTodo.innerText, updatedStatus); // Set updateCompletionTime to true
-    });
-}
+});
 
 function updateStatus(content, status) {
     // Create a new FormData object
@@ -154,46 +150,6 @@ function filterTodo(e) {
                 }
                 break;
         }
-    });
-}
-
-function saveLocalTodos(todo) {
-    let todos;
-    if(localStorage.getItem("todos") === null) {
-        todos = [];
-    } else {
-        todos = JSON.parse(localStorage.getItem("todos"));
-    }
-    todos.push(todo);
-    localStorage.setItem("todos", JSON.stringify(todos));
-}
-
-function getLocalTodos() {
-    let todos;
-    if(localStorage.getItem("todos") === null) {
-        todos = [];
-    } else {
-        todos = JSON.parse(localStorage.getItem("todos"));
-    }
-    todos.forEach(function(todo) {
-        const todoDiv = document.createElement("div");
-        todoDiv.classList.add("todo");
-        const newTodo = document.createElement("li");
-        newTodo.innerText = todo;
-        newTodo.classList.add("todo-item");
-        todoDiv.appendChild(newTodo);
-
-        const completedButton = document.createElement("button");
-        completedButton.innerHTML = '<i class="fas fa-check-circle"></i>';
-        completedButton.classList.add("complete-btn");
-        todoDiv.appendChild(completedButton);
-
-        const trashButton = document.createElement("button");
-        trashButton.innerHTML = '<i class="fas fa-trash"></i>';
-        trashButton.classList.add("trash-btn");
-        todoDiv.appendChild(trashButton);
-
-        todoList.appendChild(todoDiv);
     });
 }
 

@@ -1,6 +1,10 @@
 <?php
 session_start(); // Start the session
 
+if (!isset($_SESSION['loggedin']) || !isset($_SESSION['name'])) {
+    die('error: User not logged in');
+}
+
 $db_host = 'localhost';
 $db_user = 'root';
 $db_password = 'root';
@@ -15,6 +19,11 @@ if ($mysqli->connect_error) {
     die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
 }
 
+// Get content from POST data
+$username = $_SESSION['name'];
+$front_content = $_POST["front"] ?? '';
+$back_content = $_POST["back"] ?? '';
+
 // Prepare and bind the SQL statement
 $sql = "INSERT INTO flashcards (creation_time, username, front_content, back_content) VALUES (NOW(), ?, ?, ?)";
 $stmt = $mysqli->prepare($sql);
@@ -23,12 +32,6 @@ $stmt = $mysqli->prepare($sql);
 if (!$stmt) {
     die('Error in preparing statement: ' . $mysqli->error);
 }
-
-// Get content from POST data
-$username = $_SESSION['name'] ?? ''; // Retrieve username from session
-$front_content = $_POST["front"] ?? '';
-$back_content = $_POST["back"] ?? '';
-$creation_time = $_POST["creationTime"] ?? '';
 
 // Bind parameters to the prepared statement
 $stmt->bind_param("sss", $username, $front_content, $back_content);

@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+header('Content-Type: application/json'); // Ensure JSON response
+
 if (!isset($_SESSION['loggedin']) || !isset($_SESSION['name'])) {
     $response = array("success" => false, "message" => "User not logged in");
     echo json_encode($response);
@@ -24,11 +26,17 @@ if ($mysqli->connect_error) {
 }
 
 // Get content from POST data
-$content = $_POST["content"] ?? '';
+$front_content = $_POST["front"] ?? '';
+$back_content = $_POST["back"] ?? '';
 $username = $_SESSION['name'];
 
+// Log received POST data and session data for debugging
+error_log("POST front_content: " . $front_content);
+error_log("POST back_content: " . $back_content);
+error_log("Session username: " . $username);
+
 // Prepare and bind the SQL statement
-$sql = "DELETE FROM todo WHERE content = ? AND username = ?";
+$sql = "DELETE FROM flashcards WHERE front_content = ? AND back_content = ? AND username = ?";
 $stmt = $mysqli->prepare($sql);
 
 // Check for errors in preparing the statement
@@ -39,7 +47,7 @@ if (!$stmt) {
 }
 
 // Bind parameters to the prepared statement
-$stmt->bind_param("ss", $content, $username);
+$stmt->bind_param("sss", $front_content, $back_content, $username);
 
 // Execute the statement
 if (!$stmt->execute()) {
@@ -48,11 +56,11 @@ if (!$stmt->execute()) {
     exit;
 }
 
-// Check if any rows were affected (i.e., a todo item was deleted)
+// Check if any rows were affected (i.e., a flashcard was deleted)
 if ($stmt->affected_rows > 0) {
-    $response = array("success" => true, "message" => "Todo item deleted successfully");
+    $response = array("success" => true, "message" => "Flashcard deleted successfully");
 } else {
-    $response = array("success" => false, "message" => "Todo item not found or user does not have permission");
+    $response = array("success" => false, "message" => "Flashcard not found or user does not have permission");
 }
 
 // Close the statement and connection

@@ -19,13 +19,11 @@ if ($mysqli->connect_error) {
     die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
 }
 
-// Get content from POST data
-$front_content = $_POST["front"] ?? '';
-$back_content = $_POST["back"] ?? '';
+// Get the username from the session
 $username = $_SESSION['name'];
 
-// Prepare and bind the SQL statement
-$sql = "DELETE FROM flashcards WHERE front_content = ? AND back_content = ? AND username = ?";
+// Prepare and execute the SQL statement to fetch flashcards for the user
+$sql = "SELECT front_content, back_content FROM flashcards WHERE username = ?";
 $stmt = $mysqli->prepare($sql);
 
 // Check for errors in preparing the statement
@@ -34,19 +32,19 @@ if (!$stmt) {
 }
 
 // Bind parameters to the prepared statement
-$stmt->bind_param("sss", $front_content, $back_content, $username);
+$stmt->bind_param("s", $username);
 
 // Execute the statement
 if (!$stmt->execute()) {
     die('Error executing statement: ' . $stmt->error);
 }
 
-// Check if any rows were affected (i.e., a flashcard was deleted)
-if ($stmt->affected_rows > 0) {
-    echo 'success';
-} else {
-    echo 'error';
-}
+// Get the result
+$result = $stmt->get_result();
+$flashcards = $result->fetch_all(MYSQLI_ASSOC);
+
+// Output the flashcards as JSON
+echo json_encode(['flashcards' => $flashcards]);
 
 // Close the statement and connection
 $stmt->close();
