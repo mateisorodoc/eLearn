@@ -125,9 +125,10 @@ body::before {
   padding: 1rem;
   cursor: pointer;
   font-size: 1.5rem;
-  border-top-right-radius: 1.75rem;
-  border-bottom-right-radius: 1.75rem;
+  border-radius: 1rem;
   background: red;
+  margin-top: 320px;
+  margin-left: 75px;
 }
 
 .fa-trash{
