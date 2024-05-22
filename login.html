@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+	<title>Login</title>
+</head>
+
+<body>
+	<!--Showcase-->
+
+	<section class="bg-dark text-light text-center text-sm-start">
+		<div class="container">
+			<div class="d-sm-flex align-items-center justify-content-between">
+				<div>
+					<h1 style="margin-top: 55px;">This is your <span style="color:teal;">Learning Assistant</span> </h1>
+					<p class="lead" my-4>
+						Welcome to eLearn, where knowledge meets convenience!
+						<br> <br>
+						With our website, you can learn at your own pace and on your own schedule.
+						<br>
+						Whether you're looking to enhance your skills, feed your curiosity,
+						or explore new interests.
+						<br> <br>
+						Be your own teacher and start learning.
+
+					</p>
+					<!--<button class="btn btn-outline-light btn-lg" data-bs-toggle="modal" data-bs-target="#order">Place an order</button>-->
+				</div>
+				<img class="img-fluid w-25 mt-5 mb-5" src="elearning_1_50.png" alt="showcaseimage">
+			</div>
+	</section>
+
+	<div class="login">
+		<h1>eLearn</h1>
+		<form action="login.php" method="POST">
+			<label for="username">
+				<i class="fas fa-user"></i>
+			</label>
+			<input type="text" name="username" placeholder="Username" id="username" required>
+			<label for="password">
+				<i class="fas fa-lock"></i>
+			</label>
+			<input type="password" name="password" placeholder="Password" id="password" required>
+			<input type="submit" value="Login">
+		</form>
+		<a href="register.html">
+			<button type="submit">
+				Register
+			</button>
+		</a>
+
+	</div>
+
+	<!--Contact-->
+
+	<section class="p-5 bg-dark" id="contact">
+
+		<div class="container">
+			<div class="row g-5">
+				<div class="col-md">
+					<h2 class="text-center md-d text-light pb-4">Contact info</h2>
+					<ul class="list-group list-group-flush lead">
+						<li class="list-group-item my-2" style="border-radius: 1em;">
+							<span class="fw-bold"> <i class="bi-envelope-fill"></i> E-mail: </span>mateisoro@gmail.com
+						</li>
+						<li class="list-group-item my-2" style="border-radius: 1em;">
+							<span class="fw-bold"> <i class="bi-telephone-fill"></i> Telefon: </span> 0771697381
+						</li>
+						<li class="list-group-item my-2" style="border-radius: 1em;">
+							<span class="fw-bold"> <i class="bi-instagram"></i> Instagram: </span> @mateisorodoc
+						</li>
+						<li class="list-group-item my-2" style="border-radius: 1em;">
+							<span class="fw-bold"> <i class="bi-facebook"></i> Facebook: </span>Matei Sorodoc
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+	<!--Footer-->
+
+	<footer class="p-5 text-white text-center position-relative dark-footer">
+
+		<div class="container">
+			<p class="lead">
+				Copyright &copy; 2021 eLearn
+			</p>
+			<a href="#" class="position-absolute bottom-0 end-0 p-5">
+				<i class="bi bi-arrow-up-circle h1"></i>
+			</a>
+		</div>
+
+	</footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+		</script>
+</body>
+
+</html>

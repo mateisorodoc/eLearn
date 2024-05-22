@@ -16,7 +16,7 @@ if ($mysqli->connect_error) {
 }
 
 // Prepare and bind the SQL statement
-$sql = "INSERT INTO todo (username, creation_time, content, status) VALUES (?, NOW(), ?, ?)";
+$sql = "INSERT INTO flashcards (creation_time, username, front_content, back_content) VALUES (NOW(), ?, ?, ?)";
 $stmt = $mysqli->prepare($sql);
 
 // Check for errors in preparing the statement
@@ -24,13 +24,14 @@ if (!$stmt) {
     die('Error in preparing statement: ' . $mysqli->error);
 }
 
-// Get content and status from POST data
-$content = $_POST["content"] ?? '';
+// Get content from POST data
 $username = $_SESSION['name'] ?? ''; // Retrieve username from session
-$status = $_POST["status"] ?? 0; // Default status to 0 if not provided
+$front_content = $_POST["front"] ?? '';
+$back_content = $_POST["back"] ?? '';
+$creation_time = $_POST["creationTime"] ?? '';
 
 // Bind parameters to the prepared statement
-$stmt->bind_param("ssi", $username, $content, $status);
+$stmt->bind_param("sss", $username, $front_content, $back_content);
 
 // Execute the statement
 if (!$stmt->execute()) {
@@ -41,4 +42,3 @@ if (!$stmt->execute()) {
 $stmt->close();
 $mysqli->close();
 ?>
-

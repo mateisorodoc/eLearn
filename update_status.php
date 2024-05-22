@@ -69,26 +69,6 @@ if ($status == 1) {
     // Close the statement
     $stmt->close();
 
-    // Update the task content with the time taken
-    $new_content = $content . " (Completed in " . gmdate("i:s", $time_taken) . ")";
-    $sql = "UPDATE todo SET content = ? WHERE content = ?";
-    $stmt = $mysqli->prepare($sql);
-
-    // Check for errors in preparing the statement
-    if (!$stmt) {
-        die('Error in preparing statement: ' . $mysqli->error);
-    }
-
-    // Bind parameters to the prepared statement
-    $stmt->bind_param("ss", $new_content, $content);
-
-    // Execute the statement
-    if (!$stmt->execute()) {
-        die('Error executing statement: ' . $stmt->error);
-    }
-
-    // Close the statement
-    $stmt->close();
 }
 
 // Close the connection
@@ -98,3 +78,4 @@ $mysqli->close();
 $response = array("success" => true);
 echo json_encode($response);
 ?>
+    
