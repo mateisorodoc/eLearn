@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Bind parameters and execute the statement
         $stmt->bind_param('sss', $_POST['username'], $hashed_password,  $_POST['email']);
         if ($stmt->execute()) {
-            header('Location: index.html');
+            header('Location: login.html');
         } else {
             header('Location: register.html');
         }

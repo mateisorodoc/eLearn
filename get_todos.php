@@ -1,6 +1,5 @@
-
 <?php
-session_start();
+session_start(); // Start the session
 
 if (!isset($_SESSION['loggedin']) || !isset($_SESSION['name'])) {
     $response = array("success" => false, "message" => "User not logged in");
@@ -24,12 +23,13 @@ if ($mysqli->connect_error) {
     exit;
 }
 
-// Get content from POST data
-$content = $_POST["content"] ?? '';
+// Get username from session
 $username = $_SESSION['name'];
 
+// Prepare the SQL statement
+$sql = "SELECT * FROM todo WHERE username = ?";
+
 // Prepare and bind the SQL statement
-$sql = "DELETE FROM todo WHERE content = ? AND username = ?";
 $stmt = $mysqli->prepare($sql);
 
 // Check for errors in preparing the statement
@@ -40,7 +40,7 @@ if (!$stmt) {
 }
 
 // Bind parameters to the prepared statement
-$stmt->bind_param("ss", $content, $username);
+$stmt->bind_param("s", $username);
 
 // Execute the statement
 if (!$stmt->execute()) {
@@ -49,11 +49,15 @@ if (!$stmt->execute()) {
     exit;
 }
 
-// Check if any rows were affected (i.e., a todo item was deleted)
-if ($stmt->affected_rows > 0) {
-    $response = array("success" => true, "message" => "Todo item deleted successfully");
-} else {
-    $response = array("success" => false, "message" => "Todo item not found or user does not have permission");
+// Get the result
+$result = $stmt->get_result();
+
+// Initialize an array to store todos
+$todos = array();
+
+// Fetch todos and store them in the array
+while ($row = $result->fetch_assoc()) {
+    $todos[] = $row;
 }
 
 // Close the statement and connection
@@ -61,5 +65,5 @@ $stmt->close();
 $mysqli->close();
 
 // Send response
-echo json_encode($response);
+echo json_encode($todos);
 ?>
