@@ -23,7 +23,6 @@ function getTodosFromServer() {
             for (let todo of data) {
                 displayTodo(todo);
             }
-            // Reattach event listeners after fetching todos
         } else {
             console.log("No todos retrieved from the server.");
         }
@@ -32,7 +31,6 @@ function getTodosFromServer() {
         console.error('Error:', error);
     });
 }
-
 
 function displayTodo(todo) {
     const todoDiv = document.createElement("div");
@@ -111,7 +109,6 @@ function addTodo(event) {
         console.log('Error:', error);
     });
     
-
     // Event listener for trash button
     trashButton.addEventListener("click", function() {
         // Send request to delete todo item from database
@@ -130,7 +127,6 @@ function addTodo(event) {
         updateStatus(newTodo.innerText, updatedStatus); // Set updateCompletionTime to true
     });
 }
-
 function updateStatus(content, status) {
     // Create a new FormData object
     const formData = new FormData();
@@ -146,8 +142,12 @@ function updateStatus(content, status) {
     .then(data => {
         if (data.success) {
             // Status updated successfully
-            if (updateCompletionTime) {
-                console.log("Completion time and status updated successfully.");
+            if (status === 1 && data.time_taken !== undefined) {
+                const timeTaken = data.time_taken;
+                const hours = Math.floor(timeTaken / 3600);
+                const minutes = Math.floor((timeTaken % 3600) / 60);
+                const seconds = timeTaken % 60;
+                alert(`Task completed in ${hours}h ${minutes}m ${seconds}s`);
             }
         } else {
             // Error updating status
@@ -158,6 +158,7 @@ function updateStatus(content, status) {
         console.error('Error:', error);
     });
 }
+
 
 // Inside the deleteCheck function
 function deleteCheck(e) {
@@ -181,7 +182,6 @@ function deleteCheck(e) {
         todo.classList.toggle("completed");
     }
 }
-
 
 function filterTodo(e) {
     const todos = todoList.childNodes;

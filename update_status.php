@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $db_host = 'localhost';
 $db_user = 'root';
 $db_password = 'root';
@@ -13,7 +15,9 @@ if ($mysqli->connect_error) {
     die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
 }
 
-// Prepare and bind the SQL statement to update status and retrieve creation time
+// Set the timezone
+
+// Prepare and bind the SQL statement to update status and set completion time
 $sql = "UPDATE todo SET status = ?, completion_time = NOW() WHERE content = ?";
 $stmt = $mysqli->prepare($sql);
 
@@ -37,10 +41,11 @@ if (!$stmt->execute()) {
 // Close the statement
 $stmt->close();
 
-// If the status is set to 1 (completed), calculate and append the time taken
+$response = array("success" => true);
+
 if ($status == 1) {
     // Retrieve the creation time from the database
-    $sql = "SELECT creation_time FROM todo WHERE content = ?";
+    $sql = "SELECT creation_time, completion_time FROM todo WHERE content = ?";
     $stmt = $mysqli->prepare($sql);
 
     // Check for errors in preparing the statement
@@ -56,26 +61,25 @@ if ($status == 1) {
         die('Error executing statement: ' . $stmt->error);
     }
 
-    // Bind result variable
-    $stmt->bind_result($creation_time);
+    // Bind result variables
+    $stmt->bind_result($creation_time, $completion_time);
 
     // Fetch the result
     $stmt->fetch();
 
-    // Calculate the time taken
-    $completion_time = date("Y-m-d H:i:s");
+    // Calculate the time taken in seconds
     $time_taken = strtotime($completion_time) - strtotime($creation_time);
 
     // Close the statement
     $stmt->close();
 
+    // Include the time taken in the response
+    $response['time_taken'] = $time_taken;
 }
 
 // Close the connection
 $mysqli->close();
 
 // Return JSON response
-$response = array("success" => true);
 echo json_encode($response);
 ?>
-    
